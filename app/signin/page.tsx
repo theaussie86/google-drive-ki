@@ -31,12 +31,21 @@ export default function Login() {
       const redirectURL = window.location.origin + "/api/auth/callback";
 
       if (type === "oauth") {
-        await supabase.auth.signInWithOAuth({
+        const auth = await supabase.auth.signInWithOAuth({
           provider,
           options: {
             redirectTo: redirectURL,
+            scopes: [
+              "https://www.googleapis.com/auth/userinfo.email",
+              "https://www.googleapis.com/auth/userinfo.profile",
+              "https://www.googleapis.com/auth/drive",
+            ].join(" "),
+            queryParams: {
+              include_granted_scopes: "true",
+            },
           },
         });
+        console.log("oauth", auth);
       } else if (type === "magic_link") {
         await supabase.auth.signInWithOtp({
           email,

@@ -1,5 +1,5 @@
 {
-  "name": "ship-fast-code",
+  "name": "cw-drive-ki",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,7 +7,8 @@
     "build": "next build",
     "postbuild": "next-sitemap",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "gen": "npx supabase gen types typescript --project-id \"pvrlecihqvgenpxdjqxf\" --schema public > types/supabase.ts"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.18",
@@ -21,6 +22,7 @@
     "eslint": "8.47.0",
     "eslint-config-next": "13.4.19",
     "form-data": "^4.0.0",
+    "googleapis": "^140.0.1",
     "mailgun.js": "^9.4.1",
     "next": "^14.1.4",
     "next-plausible": "^3.12.0",
@@ -38,7 +40,6 @@
   "devDependencies": {
     "@types/jest": "^29.5.12",
     "@types/mdx": "^2.0.12",
-    "@types/mongoose": "^5.11.97",
     "@types/node": "^20.12.2",
     "@types/react": "^18.2.73",
     "@types/react-dom": "^18.2.23",
@@ -46,6 +47,7 @@
     "autoprefixer": "^10.4.19",
     "daisyui": "^4.10.1",
     "postcss": "^8.4.38",
+    "supabase": "^1.187.3",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.4.3"
   }
