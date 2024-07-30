@@ -1,10 +1,13 @@
 import ButtonAccount from "@/components/ButtonAccount";
+import { getDrive } from "@/libs/gdrive/auth";
+import { fetchContent } from "@/libs/gdrive/folder";
 import { Database } from "@/types/supabase";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
-import { drive_v3, google } from "googleapis";
+import { drive_v3 } from "googleapis";
 import { cookies } from "next/headers";
 
 export const dynamic = "force-dynamic";
+const folderId = "10j4tdsoYiS903GgiTYxfc5uvdkfji_RA";
 
 // This is a private page: It's protected by the layout.js component which ensures the user is authenticated.
 // It's a server compoment which means you can fetch data (like the user profile) before the page is rendered.
@@ -17,27 +20,13 @@ export default async function Dashboard() {
     },
   } = await supabase.auth.getSession();
 
-  const oAuth2Client = new google.auth.OAuth2(
-    process.env.CLIENT_ID,
-    process.env.CLIENT_SECRET,
-    process.env.REDIRECT_URI
-  );
-  oAuth2Client.setCredentials({
-    access_token: provider_token,
-  });
-  console.log(oAuth2Client);
   let files: drive_v3.Schema$File[] = [];
   try {
-    const drive = await google.drive({
-      version: "v3",
-      auth: oAuth2Client,
-    });
+    const drive = await getDrive(provider_token);
 
-    const res = await drive.files.list({
-      pageSize: 10,
-      // fields: "nextPageToken, files(id, name)",
-    });
-    files = res.data.files;
+    files = await fetchContent(drive, folderId);
+
+    console.log(files);
   } catch (error) {
     console.error(error);
   }
